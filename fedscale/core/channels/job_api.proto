@@ -1,14 +1,22 @@
 // GRPC definition for the communication between the aggregator and the executors.
 // After modifying this file, run
 // $ python -m grpc_tools.protoc -I../communication/ --python_out=.. --grpc_python_out=.. job_api.proto
+// No! should be $ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. job_api.proto
 syntax = "proto3";
 
 package fedscale;
 
 service JobService {
+    // these are for the aggregators
     rpc CLIENT_REGISTER (RegisterRequest) returns (ServerResponse) {}
     rpc CLIENT_PING (PingRequest) returns (ServerResponse) {}
     rpc CLIENT_EXECUTE_COMPLETION (CompleteRequest) returns (ServerResponse) {}
+    rpc SCHEDULER_WEIGHT_UPDATE (SchedulerWeightRequest) returns (ServerResponse) {}
+    rpc SCHEDULER_PING (SchedulerPingRequest) returns (ServerResponse) {}
+    // these are for the scheduler
+    rpc AGGREGATOR_REGISTER (AggregatorRegisterRequest) returns (ServerResponse) {}
+    rpc AGGREGATOR_ADJUST (AggregatorAdjustRequest) returns (ServerResponse) {}
+    rpc AGGREGATOR_WEIGHT_STREAM (AggregatorWeightRequest) returns (ServerResponse) {}
 }
 
 message ServerResponse {
@@ -36,4 +44,31 @@ message CompleteRequest {
     string msg = 5;
     string meta_result = 6;
     bytes data_result = 7;
+}
+
+message SchedulerWeightRequest {
+    string weight_path = 1;
+    bytes task_info = 2;
+}
+
+message SchedulerPingRequest {
+    string aggregator_id = 1;
+}
+
+message AggregatorRegisterRequest {
+    string aggregator_ip = 1;
+    string aggregator_port = 2;
+    bytes aggregator_info = 3;
+}
+
+message AggregatorAdjustRequest {
+    string aggregator_id = 1;
+    string capacity = 2;
+    bytes info = 3;
+}
+
+message AggregatorWeightRequest {
+    string aggregator_id = 1;
+    string weight_path = 2;
+    bytes task_info = 3;
 }

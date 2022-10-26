@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import fedscale.core.channels.job_api_pb2 as job__api__pb2
+import job_api_pb2 as job__api__pb2
 
 
 class JobServiceStub(object):
@@ -15,27 +15,53 @@ class JobServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CLIENT_REGISTER = channel.unary_unary(
-            '/fedscale.JobService/CLIENT_REGISTER',
-            request_serializer=job__api__pb2.RegisterRequest.SerializeToString,
-            response_deserializer=job__api__pb2.ServerResponse.FromString,
-        )
+                '/fedscale.JobService/CLIENT_REGISTER',
+                request_serializer=job__api__pb2.RegisterRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
         self.CLIENT_PING = channel.unary_unary(
-            '/fedscale.JobService/CLIENT_PING',
-            request_serializer=job__api__pb2.PingRequest.SerializeToString,
-            response_deserializer=job__api__pb2.ServerResponse.FromString,
-        )
+                '/fedscale.JobService/CLIENT_PING',
+                request_serializer=job__api__pb2.PingRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
         self.CLIENT_EXECUTE_COMPLETION = channel.unary_unary(
-            '/fedscale.JobService/CLIENT_EXECUTE_COMPLETION',
-            request_serializer=job__api__pb2.CompleteRequest.SerializeToString,
-            response_deserializer=job__api__pb2.ServerResponse.FromString,
-        )
+                '/fedscale.JobService/CLIENT_EXECUTE_COMPLETION',
+                request_serializer=job__api__pb2.CompleteRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
+        self.SCHEDULER_WEIGHT_UPDATE = channel.unary_unary(
+                '/fedscale.JobService/SCHEDULER_WEIGHT_UPDATE',
+                request_serializer=job__api__pb2.SchedulerWeightRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
+        self.SCHEDULER_PING = channel.unary_unary(
+                '/fedscale.JobService/SCHEDULER_PING',
+                request_serializer=job__api__pb2.SchedulerPingRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
+        self.AGGREGATOR_REGISTER = channel.unary_unary(
+                '/fedscale.JobService/AGGREGATOR_REGISTER',
+                request_serializer=job__api__pb2.AggregatorRegisterRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
+        self.AGGREGATOR_ADJUST = channel.unary_unary(
+                '/fedscale.JobService/AGGREGATOR_ADJUST',
+                request_serializer=job__api__pb2.AggregatorAdjustRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
+        self.AGGREGATOR_WEIGHT_STREAM = channel.unary_unary(
+                '/fedscale.JobService/AGGREGATOR_WEIGHT_STREAM',
+                request_serializer=job__api__pb2.AggregatorWeightRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
 
 
 class JobServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def CLIENT_REGISTER(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """these are for the aggregators
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -52,82 +78,222 @@ class JobServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SCHEDULER_WEIGHT_UPDATE(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SCHEDULER_PING(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AGGREGATOR_REGISTER(self, request, context):
+        """these are for the scheduler
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AGGREGATOR_ADJUST(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AGGREGATOR_WEIGHT_STREAM(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_JobServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        'CLIENT_REGISTER': grpc.unary_unary_rpc_method_handler(
-            servicer.CLIENT_REGISTER,
-            request_deserializer=job__api__pb2.RegisterRequest.FromString,
-            response_serializer=job__api__pb2.ServerResponse.SerializeToString,
-        ),
-        'CLIENT_PING': grpc.unary_unary_rpc_method_handler(
-            servicer.CLIENT_PING,
-            request_deserializer=job__api__pb2.PingRequest.FromString,
-            response_serializer=job__api__pb2.ServerResponse.SerializeToString,
-        ),
-        'CLIENT_EXECUTE_COMPLETION': grpc.unary_unary_rpc_method_handler(
-            servicer.CLIENT_EXECUTE_COMPLETION,
-            request_deserializer=job__api__pb2.CompleteRequest.FromString,
-            response_serializer=job__api__pb2.ServerResponse.SerializeToString,
-        ),
+            'CLIENT_REGISTER': grpc.unary_unary_rpc_method_handler(
+                    servicer.CLIENT_REGISTER,
+                    request_deserializer=job__api__pb2.RegisterRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'CLIENT_PING': grpc.unary_unary_rpc_method_handler(
+                    servicer.CLIENT_PING,
+                    request_deserializer=job__api__pb2.PingRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'CLIENT_EXECUTE_COMPLETION': grpc.unary_unary_rpc_method_handler(
+                    servicer.CLIENT_EXECUTE_COMPLETION,
+                    request_deserializer=job__api__pb2.CompleteRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'SCHEDULER_WEIGHT_UPDATE': grpc.unary_unary_rpc_method_handler(
+                    servicer.SCHEDULER_WEIGHT_UPDATE,
+                    request_deserializer=job__api__pb2.SchedulerWeightRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'SCHEDULER_PING': grpc.unary_unary_rpc_method_handler(
+                    servicer.SCHEDULER_PING,
+                    request_deserializer=job__api__pb2.SchedulerPingRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'AGGREGATOR_REGISTER': grpc.unary_unary_rpc_method_handler(
+                    servicer.AGGREGATOR_REGISTER,
+                    request_deserializer=job__api__pb2.AggregatorRegisterRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'AGGREGATOR_ADJUST': grpc.unary_unary_rpc_method_handler(
+                    servicer.AGGREGATOR_ADJUST,
+                    request_deserializer=job__api__pb2.AggregatorAdjustRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'AGGREGATOR_WEIGHT_STREAM': grpc.unary_unary_rpc_method_handler(
+                    servicer.AGGREGATOR_WEIGHT_STREAM,
+                    request_deserializer=job__api__pb2.AggregatorWeightRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        'fedscale.JobService', rpc_method_handlers)
+            'fedscale.JobService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
+
  # This class is part of an EXPERIMENTAL API.
-
-
 class JobService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def CLIENT_REGISTER(request,
-                        target,
-                        options=(),
-                        channel_credentials=None,
-                        call_credentials=None,
-                        insecure=False,
-                        compression=None,
-                        wait_for_ready=None,
-                        timeout=None,
-                        metadata=None):
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
         return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/CLIENT_REGISTER',
-                                             job__api__pb2.RegisterRequest.SerializeToString,
-                                             job__api__pb2.ServerResponse.FromString,
-                                             options, channel_credentials,
-                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            job__api__pb2.RegisterRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def CLIENT_PING(request,
-                    target,
-                    options=(),
-                    channel_credentials=None,
-                    call_credentials=None,
-                    insecure=False,
-                    compression=None,
-                    wait_for_ready=None,
-                    timeout=None,
-                    metadata=None):
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
         return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/CLIENT_PING',
-                                             job__api__pb2.PingRequest.SerializeToString,
-                                             job__api__pb2.ServerResponse.FromString,
-                                             options, channel_credentials,
-                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            job__api__pb2.PingRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def CLIENT_EXECUTE_COMPLETION(request,
-                                  target,
-                                  options=(),
-                                  channel_credentials=None,
-                                  call_credentials=None,
-                                  insecure=False,
-                                  compression=None,
-                                  wait_for_ready=None,
-                                  timeout=None,
-                                  metadata=None):
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
         return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/CLIENT_EXECUTE_COMPLETION',
-                                             job__api__pb2.CompleteRequest.SerializeToString,
-                                             job__api__pb2.ServerResponse.FromString,
-                                             options, channel_credentials,
-                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            job__api__pb2.CompleteRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SCHEDULER_WEIGHT_UPDATE(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/SCHEDULER_WEIGHT_UPDATE',
+            job__api__pb2.SchedulerWeightRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SCHEDULER_PING(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/SCHEDULER_PING',
+            job__api__pb2.SchedulerPingRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AGGREGATOR_REGISTER(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_REGISTER',
+            job__api__pb2.AggregatorRegisterRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AGGREGATOR_ADJUST(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_ADJUST',
+            job__api__pb2.AggregatorAdjustRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AGGREGATOR_WEIGHT_STREAM(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_WEIGHT_STREAM',
+            job__api__pb2.AggregatorWeightRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

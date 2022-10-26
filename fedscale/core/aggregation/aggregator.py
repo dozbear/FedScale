@@ -9,6 +9,7 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 
 import fedscale.core.channels.job_api_pb2_grpc as job_api_pb2_grpc
+from fedscale.core.channels.channel_context import ClientConnections
 import fedscale.core.logger.aggragation as logger
 import fedscale.core.config_parser as parser
 from fedscale.core import commons
@@ -98,6 +99,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
                                 'gradient_policy': args.gradient_policy, 'task': args.task, 'perf': collections.OrderedDict()}
 
         self.log_writer = SummaryWriter(log_dir=logger.logDir)
+        self.capicity = 10  # by default
 
         # ======== Task specific ============
         self.init_task_context()
@@ -121,6 +123,27 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         np.random.seed(seed)
         random.seed(seed)
         torch.backends.cudnn.deterministic = True
+    
+    def report_aggregator_info_handler(self):
+        return { 'capicity': self.capicity }
+    
+    def init_scheduler_communication(self):
+        # initiate communication to scheduler
+        logging.info(f"Initiating scheduler communication ...")
+        self.scheduler_communicator = ClientConnections(
+            self.args.scheduler_ip, self.args.scheduler_port)
+        self.scheduler_communicator.connect_to_server()
+        response = self.scheduler_communicator.stub.AGGREGATOR_REGISTER(
+            job_api_pb2.AggregatorRegisterRequest(
+                aggregator_ip=str(self.args.scheduler_ip),
+                aggregator_port=str(self.args.scheduler_port),
+                aggregator_info=self.serialize_response(
+                    self.report_aggregator_info_handler()
+                )
+            )
+        )
+        self.aggregator_id = self.deserialize_response(response.data)['aggregator_id']
+        logging.info(f'%%%%%%%%%% Assigned aggregator id {self.aggregator_id} from scheduler %%%%%%%%%%')
 
     def init_control_communication(self):
         """Create communication channel between coordinator and executor.
@@ -338,6 +361,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         and communication environment, and monitoring the grpc message.
         """
         self.setup_env()
+        self.init_scheduler_communication()
         self.init_control_communication()
         self.init_data_communication()
 
@@ -396,10 +420,15 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         self.update_lock.acquire()
 
         self.model_in_update += 1
+
+        # TODO
+        '''
         if self.using_group_params == True:
             self.aggregate_client_group_weights(results)
         else:
             self.aggregate_client_weights(results)
+        '''
+
 
         self.update_lock.release()
 
@@ -863,6 +892,14 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
             logging.error(f"Received undefined event {event} from client {client_id}")
 
         return self.CLIENT_PING(request, context)
+    
+    def SCHEDULER_WEIGHT_UPDATE(self, request, context):
+
+
+    def SCHEDULER_PING(self, request, context):
+        """Simply check liveness
+        """
+        raise NotImplementedError('Method not implemented!')
 
     def event_monitor(self):
         """Activate event handler according to the received new message
