@@ -22,6 +22,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         self.grpc_server = None
         self.aggregators = {}
         self.aggr_counter = 0
+        self.register_lock = threading.Lock()
 
     def init_control_communication(self, args):
         # initiate server
@@ -48,16 +49,17 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         aggr_port = request.aggregator_port
         aggr_info = self.deserialize_response(request.aggregator_info)
 
+        self.register_lock.acquire()
         aggr_communicator = ClientConnections(aggr_ip, aggr_port)
-        aggr_id = self.aggr_counter
+        aggr_id = str(self.aggr_counter)
+        self.aggr_counter += 1
         self.aggregators[aggr_id] = {
             'load': 0,
             'capacity': aggr_info['capacity'],
             'communicator': aggr_communicator
         }
         logging.info(f"Aggregator {aggr_id} registered, address {aggr_ip}:{aggr_port}.")
-
-        self.aggr_counter += 1
+        self.register_lock.release()
 
         dummy_meta = self.serialize_response(commons.DUMMY_RESPONSE)
         data = self.serialize_response({'aggregator_id': aggr_id})

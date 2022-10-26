@@ -143,6 +143,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
             )
         )
         self.aggregator_id = self.deserialize_response(response.data)['aggregator_id']
+        self.weight_dir = f'weight_{self.aggregator_id}'
         logging.info(f'%%%%%%%%%% Assigned aggregator id {self.aggregator_id} from scheduler %%%%%%%%%%')
 
     def init_control_communication(self):
@@ -419,7 +420,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         # ================== Aggregate weights ======================
         self.update_lock.acquire()
 
-        self.model_in_update += 1
+        # self.model_in_update += 1
 
         # TODO
         '''
@@ -429,8 +430,18 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
             self.aggregate_client_weights(results)
         '''
 
+        if not os.path.isdir(self.weight_dir):
+            os.mkdir(self.weight_dir)
 
-        self.update_lock.release()
+        dummy_data = self.serialize_response(commons.DUMMY_RESPONSE)
+        response = self.scheduler_communicator.stub.AGGREGATOR_WEIGHT_STREAM(
+            job_api_pb2.AggregatorWeightRequest(
+                aggregator_id = self.aggregator_id,
+                weight_path = '',
+                task_info = dummy_data
+            )
+        )
+        # self.update_lock.release()
 
     def aggregate_client_weights(self, results):
         """May aggregate client updates on the fly
