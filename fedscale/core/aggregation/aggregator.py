@@ -935,7 +935,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         self.update_lock.release()
 
         response = self.scheduler_communicator.stub.AGGREGATOR_WEIGHT_FINISH(
-            job_api_pb2.AggregatorWeightRequest(
+            job_api_pb2.AggregatorFinishRequest(
                 aggregator_id = self.aggregator_id,
                 data = self.serialize_response(commons.DUMMY_RESPONSE)
             )
@@ -973,8 +973,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
                 client_id, current_event, meta, data = self.sever_events_queue.popleft()
 
                 if current_event == commons.UPLOAD_MODEL:
-                    self.client_completion_handler(
-                        self.deserialize_response(data))
+                    self.client_completion_handler(self.deserialize_response(data))
                     if len(self.stats_util_accumulator) == self.tasks_round:
                         self.round_completion_handler()
 

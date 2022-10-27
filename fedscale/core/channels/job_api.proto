@@ -17,7 +17,7 @@ service JobService {
     rpc AGGREGATOR_REGISTER (AggregatorRegisterRequest) returns (ServerResponse) {}
     rpc AGGREGATOR_ADJUST (AggregatorAdjustRequest) returns (ServerResponse) {}
     rpc AGGREGATOR_WEIGHT_STREAM (AggregatorWeightRequest) returns (ServerResponse) {}
-    rpc AGGREGATOR_WEIGHT_FINISH (AggregatorWeightRequest) returns (ServerResponse) {}
+    rpc AGGREGATOR_WEIGHT_FINISH (AggregatorFinishRequest) returns (ServerResponse) {}
 }
 
 message ServerResponse {
@@ -69,6 +69,11 @@ message AggregatorAdjustRequest {
 }
 
 message AggregatorWeightRequest {
+    string aggregator_id = 1;
+    bytes data = 2;
+}
+
+message AggregatorFinishRequest {
     string aggregator_id = 1;
     bytes data = 2;
 }
