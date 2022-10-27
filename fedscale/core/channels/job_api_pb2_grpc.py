@@ -54,6 +54,11 @@ class JobServiceStub(object):
                 request_serializer=job__api__pb2.AggregatorWeightRequest.SerializeToString,
                 response_deserializer=job__api__pb2.ServerResponse.FromString,
                 )
+        self.AGGREGATOR_WEIGHT_FINISH = channel.unary_unary(
+                '/fedscale.JobService/AGGREGATOR_WEIGHT_FINISH',
+                request_serializer=job__api__pb2.AggregatorWeightRequest.SerializeToString,
+                response_deserializer=job__api__pb2.ServerResponse.FromString,
+                )
 
 
 class JobServiceServicer(object):
@@ -109,6 +114,12 @@ class JobServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AGGREGATOR_WEIGHT_FINISH(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_JobServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -149,6 +160,11 @@ def add_JobServiceServicer_to_server(servicer, server):
             ),
             'AGGREGATOR_WEIGHT_STREAM': grpc.unary_unary_rpc_method_handler(
                     servicer.AGGREGATOR_WEIGHT_STREAM,
+                    request_deserializer=job__api__pb2.AggregatorWeightRequest.FromString,
+                    response_serializer=job__api__pb2.ServerResponse.SerializeToString,
+            ),
+            'AGGREGATOR_WEIGHT_FINISH': grpc.unary_unary_rpc_method_handler(
+                    servicer.AGGREGATOR_WEIGHT_FINISH,
                     request_deserializer=job__api__pb2.AggregatorWeightRequest.FromString,
                     response_serializer=job__api__pb2.ServerResponse.SerializeToString,
             ),
@@ -293,6 +309,23 @@ class JobService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_WEIGHT_STREAM',
+            job__api__pb2.AggregatorWeightRequest.SerializeToString,
+            job__api__pb2.ServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AGGREGATOR_WEIGHT_FINISH(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_WEIGHT_FINISH',
             job__api__pb2.AggregatorWeightRequest.SerializeToString,
             job__api__pb2.ServerResponse.FromString,
             options, channel_credentials,

@@ -15,5 +15,9 @@ CLIENT_TRAIN = 'client_train'
 DUMMY_EVENT = 'dummy_event'
 UPLOAD_MODEL = 'upload_model'
 
+# Scheduler Events
+AGGREGATOR_UPDATE = 'aggregator_update'
+AGGREGATOR_FINISH = 'aggregator_finish'
+
 # PLACEHOLD
 DUMMY_RESPONSE = 'N'

@@ -17,6 +17,8 @@ from fedscale.core.channels import job_api_pb2
 from fedscale.core.resource_manager import ResourceManager
 from fedscale.core.fllibs import *
 
+import uuid
+
 MAX_MESSAGE_LENGTH = 1*1024*1024*1024  # 1GB
 
 
@@ -144,6 +146,8 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         )
         self.aggregator_id = self.deserialize_response(response.data)['aggregator_id']
         self.weight_dir = f'weight_{self.aggregator_id}'
+        if not os.path.isdir(self.weight_dir):
+            os.mkdir(self.weight_dir)
         logging.info(f'%%%%%%%%%% Assigned aggregator id {self.aggregator_id} from scheduler %%%%%%%%%%')
 
     def init_control_communication(self):
@@ -418,30 +422,33 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
                                           )
 
         # ================== Aggregate weights ======================
-        self.update_lock.acquire()
 
-        # self.model_in_update += 1
-
-        # TODO
         '''
+        self.update_lock.acquire()
+        self.model_in_update += 1
+
         if self.using_group_params == True:
             self.aggregate_client_group_weights(results)
         else:
             self.aggregate_client_weights(results)
         '''
 
-        if not os.path.isdir(self.weight_dir):
-            os.mkdir(self.weight_dir)
-
-        dummy_data = self.serialize_response(commons.DUMMY_RESPONSE)
+        # TODO
+        weight_path = os.path.join(self.weight_dir, f'{str(uuid.uuid4())}.bin')
+        pickle.dump(results, open(weight_path, "wb"))
+        data = self.serialize_response({
+            'group': self.using_group_params,
+            'path': weight_path
+        })
         response = self.scheduler_communicator.stub.AGGREGATOR_WEIGHT_STREAM(
             job_api_pb2.AggregatorWeightRequest(
                 aggregator_id = self.aggregator_id,
-                weight_path = '',
-                task_info = dummy_data
+                data = data
             )
         )
+
         # self.update_lock.release()
+        return response
 
     def aggregate_client_weights(self, results):
         """May aggregate client updates on the fly
@@ -905,7 +912,36 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         return self.CLIENT_PING(request, context)
     
     def SCHEDULER_WEIGHT_UPDATE(self, request, context):
-        raise NotImplementedError('Method not implemented!')
+        # TODO
+        if self.using_group_params == True:
+            self.aggregate_client_group_weights(results)
+        else:
+            self.aggregate_client_weights(results)
+
+        aggr_id = request.aggregator_id
+        data = self.deserialize_response(request.data)
+        
+        logging.info('Received scheduler instruction to aggregate task {data}.')
+        weight_path = data['path']
+        results = pickle.load(open(weight_path, 'rb'))
+
+        self.update_lock.acquire()
+        self.model_in_update += 1
+
+        if data['group']:
+            self.aggregate_client_group_weights(results)
+        else:
+            self.aggregate_client_weights(results)
+
+        self.update_lock.release()
+
+        response = self.scheduler_communicator.stub.AGGREGATOR_WEIGHT_FINISH(
+            job_api_pb2.AggregatorWeightRequest(
+                aggregator_id = self.aggregator_id,
+                data = self.serialize_response(commons.DUMMY_RESPONSE)
+            )
+        )
+        return response
 
     def SCHEDULER_PING(self, request, context):
         """Simply check liveness
