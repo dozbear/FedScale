@@ -135,8 +135,8 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         self.scheduler_communicator.connect_to_server()
         response = self.scheduler_communicator.stub.AGGREGATOR_REGISTER(
             job_api_pb2.AggregatorRegisterRequest(
-                aggregator_ip=str(self.args.scheduler_ip),
-                aggregator_port=str(self.args.scheduler_port),
+                aggregator_ip=str(self.args.ps_ip),
+                aggregator_port=str(self.args.ps_port),
                 aggregator_info=self.serialize_response(
                     self.report_aggregator_info_handler()
                 )
