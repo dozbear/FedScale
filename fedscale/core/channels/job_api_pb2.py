@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rjob_api.proto\x12\x08\x66\x65\x64scale\";\n\x0eServerResponse\x12\r\n\x05\x65vent\x18\x01 \x01(\t\x12\x0c\n\x04meta\x18\x02 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\"P\n\x0fRegisterRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\x12\x15\n\rexecutor_info\x18\x03 \x01(\x0c\"5\n\x0bPingRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\"\x8f\x01\n\x0f\x43ompleteRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\x12\r\n\x05\x65vent\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\x12\x0b\n\x03msg\x18\x05 \x01(\t\x12\x13\n\x0bmeta_result\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x61ta_result\x18\x07 \x01(\x0c\"=\n\x16SchedulerWeightRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"-\n\x14SchedulerPingRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\"d\n\x19\x41ggregatorRegisterRequest\x12\x15\n\raggregator_ip\x18\x01 \x01(\t\x12\x17\n\x0f\x61ggregator_port\x18\x02 \x01(\t\x12\x17\n\x0f\x61ggregator_info\x18\x03 \x01(\x0c\"P\n\x17\x41ggregatorAdjustRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x10\n\x08\x63\x61pacity\x18\x02 \x01(\t\x12\x0c\n\x04info\x18\x03 \x01(\x0c\">\n\x17\x41ggregatorWeightRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x32\xf5\x05\n\nJobService\x12H\n\x0f\x43LIENT_REGISTER\x12\x19.fedscale.RegisterRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12@\n\x0b\x43LIENT_PING\x12\x15.fedscale.PingRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12R\n\x19\x43LIENT_EXECUTE_COMPLETION\x12\x19.fedscale.CompleteRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12W\n\x17SCHEDULER_WEIGHT_UPDATE\x12 .fedscale.SchedulerWeightRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12L\n\x0eSCHEDULER_PING\x12\x1e.fedscale.SchedulerPingRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12V\n\x13\x41GGREGATOR_REGISTER\x12#.fedscale.AggregatorRegisterRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12R\n\x11\x41GGREGATOR_ADJUST\x12!.fedscale.AggregatorAdjustRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12Y\n\x18\x41GGREGATOR_WEIGHT_STREAM\x12!.fedscale.AggregatorWeightRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12Y\n\x18\x41GGREGATOR_WEIGHT_FINISH\x12!.fedscale.AggregatorWeightRequest\x1a\x18.fedscale.ServerResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\rjob_api.proto\x12\x08\x66\x65\x64scale\";\n\x0eServerResponse\x12\r\n\x05\x65vent\x18\x01 \x01(\t\x12\x0c\n\x04meta\x18\x02 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\"P\n\x0fRegisterRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\x12\x15\n\rexecutor_info\x18\x03 \x01(\x0c\"5\n\x0bPingRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\"\x8f\x01\n\x0f\x43ompleteRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\x13\n\x0b\x65xecutor_id\x18\x02 \x01(\t\x12\r\n\x05\x65vent\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\x12\x0b\n\x03msg\x18\x05 \x01(\t\x12\x13\n\x0bmeta_result\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x61ta_result\x18\x07 \x01(\x0c\"=\n\x16SchedulerWeightRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"-\n\x14SchedulerPingRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\"d\n\x19\x41ggregatorRegisterRequest\x12\x15\n\raggregator_ip\x18\x01 \x01(\t\x12\x17\n\x0f\x61ggregator_port\x18\x02 \x01(\t\x12\x17\n\x0f\x61ggregator_info\x18\x03 \x01(\x0c\"P\n\x17\x41ggregatorAdjustRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x10\n\x08\x63\x61pacity\x18\x02 \x01(\t\x12\x0c\n\x04info\x18\x03 \x01(\x0c\">\n\x17\x41ggregatorWeightRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\">\n\x17\x41ggregatorFinishRequest\x12\x15\n\raggregator_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x32\xf5\x05\n\nJobService\x12H\n\x0f\x43LIENT_REGISTER\x12\x19.fedscale.RegisterRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12@\n\x0b\x43LIENT_PING\x12\x15.fedscale.PingRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12R\n\x19\x43LIENT_EXECUTE_COMPLETION\x12\x19.fedscale.CompleteRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12W\n\x17SCHEDULER_WEIGHT_UPDATE\x12 .fedscale.SchedulerWeightRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12L\n\x0eSCHEDULER_PING\x12\x1e.fedscale.SchedulerPingRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12V\n\x13\x41GGREGATOR_REGISTER\x12#.fedscale.AggregatorRegisterRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12R\n\x11\x41GGREGATOR_ADJUST\x12!.fedscale.AggregatorAdjustRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12Y\n\x18\x41GGREGATOR_WEIGHT_STREAM\x12!.fedscale.AggregatorWeightRequest\x1a\x18.fedscale.ServerResponse\"\x00\x12Y\n\x18\x41GGREGATOR_WEIGHT_FINISH\x12!.fedscale.AggregatorFinishRequest\x1a\x18.fedscale.ServerResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -431,6 +431,45 @@ _AGGREGATORWEIGHTREQUEST = _descriptor.Descriptor(
   serialized_end=727,
 )
 
+
+_AGGREGATORFINISHREQUEST = _descriptor.Descriptor(
+  name='AggregatorFinishRequest',
+  full_name='fedscale.AggregatorFinishRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='aggregator_id', full_name='fedscale.AggregatorFinishRequest.aggregator_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='data', full_name='fedscale.AggregatorFinishRequest.data', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=729,
+  serialized_end=791,
+)
+
 DESCRIPTOR.message_types_by_name['ServerResponse'] = _SERVERRESPONSE
 DESCRIPTOR.message_types_by_name['RegisterRequest'] = _REGISTERREQUEST
 DESCRIPTOR.message_types_by_name['PingRequest'] = _PINGREQUEST
@@ -440,6 +479,7 @@ DESCRIPTOR.message_types_by_name['SchedulerPingRequest'] = _SCHEDULERPINGREQUEST
 DESCRIPTOR.message_types_by_name['AggregatorRegisterRequest'] = _AGGREGATORREGISTERREQUEST
 DESCRIPTOR.message_types_by_name['AggregatorAdjustRequest'] = _AGGREGATORADJUSTREQUEST
 DESCRIPTOR.message_types_by_name['AggregatorWeightRequest'] = _AGGREGATORWEIGHTREQUEST
+DESCRIPTOR.message_types_by_name['AggregatorFinishRequest'] = _AGGREGATORFINISHREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ServerResponse = _reflection.GeneratedProtocolMessageType('ServerResponse', (_message.Message,), {
@@ -505,6 +545,13 @@ AggregatorWeightRequest = _reflection.GeneratedProtocolMessageType('AggregatorWe
   })
 _sym_db.RegisterMessage(AggregatorWeightRequest)
 
+AggregatorFinishRequest = _reflection.GeneratedProtocolMessageType('AggregatorFinishRequest', (_message.Message,), {
+  'DESCRIPTOR' : _AGGREGATORFINISHREQUEST,
+  '__module__' : 'job_api_pb2'
+  # @@protoc_insertion_point(class_scope:fedscale.AggregatorFinishRequest)
+  })
+_sym_db.RegisterMessage(AggregatorFinishRequest)
+
 
 
 _JOBSERVICE = _descriptor.ServiceDescriptor(
@@ -514,8 +561,8 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=730,
-  serialized_end=1487,
+  serialized_start=794,
+  serialized_end=1551,
   methods=[
   _descriptor.MethodDescriptor(
     name='CLIENT_REGISTER',
@@ -602,7 +649,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
     full_name='fedscale.JobService.AGGREGATOR_WEIGHT_FINISH',
     index=8,
     containing_service=None,
-    input_type=_AGGREGATORWEIGHTREQUEST,
+    input_type=_AGGREGATORFINISHREQUEST,
     output_type=_SERVERRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

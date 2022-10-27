@@ -56,7 +56,7 @@ class JobServiceStub(object):
                 )
         self.AGGREGATOR_WEIGHT_FINISH = channel.unary_unary(
                 '/fedscale.JobService/AGGREGATOR_WEIGHT_FINISH',
-                request_serializer=job__api__pb2.AggregatorWeightRequest.SerializeToString,
+                request_serializer=job__api__pb2.AggregatorFinishRequest.SerializeToString,
                 response_deserializer=job__api__pb2.ServerResponse.FromString,
                 )
 
@@ -165,7 +165,7 @@ def add_JobServiceServicer_to_server(servicer, server):
             ),
             'AGGREGATOR_WEIGHT_FINISH': grpc.unary_unary_rpc_method_handler(
                     servicer.AGGREGATOR_WEIGHT_FINISH,
-                    request_deserializer=job__api__pb2.AggregatorWeightRequest.FromString,
+                    request_deserializer=job__api__pb2.AggregatorFinishRequest.FromString,
                     response_serializer=job__api__pb2.ServerResponse.SerializeToString,
             ),
     }
@@ -326,7 +326,7 @@ class JobService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/fedscale.JobService/AGGREGATOR_WEIGHT_FINISH',
-            job__api__pb2.AggregatorWeightRequest.SerializeToString,
+            job__api__pb2.AggregatorFinishRequest.SerializeToString,
             job__api__pb2.ServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
