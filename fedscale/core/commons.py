@@ -14,6 +14,7 @@ CLIENT_CONNECT = 'client_connect'
 CLIENT_TRAIN = 'client_train'
 DUMMY_EVENT = 'dummy_event'
 UPLOAD_MODEL = 'upload_model'
+WEIGHT_UPDATE = 'weight_update'
 
 # Scheduler Events
 AGGREGATOR_UPDATE = 'aggregator_update'

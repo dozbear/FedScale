@@ -407,6 +407,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         #       -results = {'clientId':clientId, 'update_weight': model_param, 'moving_loss': round_train_loss,
         #       'trained_size': count, 'wall_duration': time_cost, 'success': is_success 'utility': utility}
 
+        '''
         if self.args.gradient_policy in ['q-fedavg']:
             self.client_training_results.append(results)
         # Feed metrics to client sampler
@@ -420,6 +421,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
                                           duration=self.virtual_client_clock[results['clientId']]['computation'] +
                                           self.virtual_client_clock[results['clientId']]['communication']
                                           )
+        '''
 
         # ================== Aggregate weights ======================
 
@@ -912,13 +914,29 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
     
     def SCHEDULER_WEIGHT_UPDATE(self, request, context):
         # TODO
-
         aggr_id = request.aggregator_id
         data = self.deserialize_response(request.data)
-        
+        self.add_event_handler(None, commons.WEIGHT_UPDATE, None, data)
         logging.info('Received scheduler instruction to aggregate task {data}.')
+        
+    
+    def weight_update_handler(self, data):
         weight_path = data['path']
         results = pickle.load(open(weight_path, 'rb'))
+
+        if self.args.gradient_policy in ['q-fedavg']:
+            self.client_training_results.append(results)
+        # Feed metrics to client sampler
+        self.stats_util_accumulator.append(results['utility'])
+        self.loss_accumulator.append(results['moving_loss'])
+
+        self.client_manager.register_feedback(results['clientId'], results['utility'],
+                                          auxi=math.sqrt(
+                                              results['moving_loss']),
+                                          time_stamp=self.round,
+                                          duration=self.virtual_client_clock[results['clientId']]['computation'] +
+                                          self.virtual_client_clock[results['clientId']]['communication']
+                                          )
 
         self.update_lock.acquire()
         self.model_in_update += 1
@@ -969,13 +987,17 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
                 client_id, current_event, meta, data = self.sever_events_queue.popleft()
 
                 if current_event == commons.UPLOAD_MODEL:
-                    self.client_completion_handler(self.deserialize_response(data))
-                    if len(self.stats_util_accumulator) == self.tasks_round:
-                        self.round_completion_handler()
-
+                    self.client_completion_handler(
+                        self.deserialize_response(data))
+                    
                 elif current_event == commons.MODEL_TEST:
                     self.testing_completion_handler(
                         client_id, self.deserialize_response(data))
+                
+                elif current_event == commons.WEIGHT_UPDATE:
+                    self.weight_update_handler(data)
+                    if len(self.stats_util_accumulator) == self.tasks_round:
+                        self.round_completion_handler()
 
                 else:
                     logging.error(f"Event {current_event} is not defined")
