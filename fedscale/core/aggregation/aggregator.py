@@ -434,7 +434,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         '''
 
         # TODO
-        weight_path = os.path.join(self.weight_dir, f'{str(uuid.uuid4())}.bin')
+        weight_path = str(os.path.join(self.weight_dir, f'{str(uuid.uuid4())}.bin'))
         pickle.dump(results, open(weight_path, "wb"))
         response = self.scheduler_communicator.stub.AGGREGATOR_WEIGHT_STREAM(
             job_api_pb2.AggregatorWeightRequest(
