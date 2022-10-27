@@ -77,12 +77,18 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         data = self.deserialize_response(request.data)
         self.events_queue.append((aggr_id, commons.AGGREGATOR_UPDATE, data))
         logging.info(f"Received task from aggregator {aggr_id} with data {data}.")
+        
+        dummy_data = self.serialize_response(commons.DUMMY_RESPONSE)
+        return job_api_pb2.ServerResponse(event=commons.DUMMY_EVENT, meta=dummy_data, data=dummy_data)
     
     def AGGREGATOR_WEIGHT_FINISH(self, request, context):
         aggr_id = request.aggregator_id
         data = self.deserialize_response(request.data)
         self.events_queue.append((aggr_id, commons.AGGREGATOR_FINISH, data))
         logging.info(f"Aggregator {aggr_id} finished task {data}.")
+
+        dummy_data = self.serialize_response(commons.DUMMY_RESPONSE)
+        return job_api_pb2.ServerResponse(event=commons.DUMMY_EVENT, meta=dummy_data, data=dummy_data)
     
     def deserialize_response(self, responses):
         return pickle.loads(responses)
