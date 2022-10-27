@@ -134,6 +134,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         logging.info(f"Initiating scheduler communication ...")
         self.scheduler_communicator = ClientConnections(
             self.args.scheduler_ip, self.args.scheduler_port)
+        self.scheduler_communicator.connect_to_server()
         response = self.scheduler_communicator.stub.AGGREGATOR_REGISTER(
             job_api_pb2.AggregatorRegisterRequest(
                 aggregator_ip=str(self.args.ps_ip),
