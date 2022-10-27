@@ -94,7 +94,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         response = communicator.stub.SCHEDULER_WEIGHT_UPDATE(
             job_api_pb2.AggregatorWeightRequest(
                 aggregator_id = aggr_id,
-                data = data
+                data = self.serialize_response(data)
             )
         )
         return response
