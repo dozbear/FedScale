@@ -919,6 +919,8 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         self.add_event_handler(None, commons.WEIGHT_UPDATE, None, data)
         logging.info('Received scheduler instruction to aggregate task {data}.')
         
+        dummy_data = self.serialize_response(commons.DUMMY_RESPONSE)
+        return job_api_pb2.ServerResponse(event=commons.DUMMY_EVENT, meta=dummy_data, data=dummy_data)
     
     def weight_update_handler(self, data):
         weight_path = data['path']
