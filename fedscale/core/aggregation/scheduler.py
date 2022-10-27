@@ -24,7 +24,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         self.aggr_counter = 0
         self.register_lock = threading.Lock()
 
-    def init_control_communication(self, args):
+    def init_control_communication(self):
         # initiate server
         self.grpc_server = grpc.server(
             futures.ThreadPoolExecutor(max_workers=20),
