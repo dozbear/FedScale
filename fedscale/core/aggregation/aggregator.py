@@ -905,7 +905,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         return self.CLIENT_PING(request, context)
     
     def SCHEDULER_WEIGHT_UPDATE(self, request, context):
-
+        raise NotImplementedError('Method not implemented!')
 
     def SCHEDULER_PING(self, request, context):
         """Simply check liveness
