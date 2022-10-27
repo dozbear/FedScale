@@ -110,6 +110,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
                 if current_event == commons.AGGREGATOR_UPDATE:
                     if aggregator['load'] < aggregator['capacity']:
                         aggregator['load'] += 1
+                        logging.info(f'Queue received {aggr_id}, {data}')
                         self.send_task(aggregator['communicator'], aggr_id, data)
                     else:
                         if len(self.events_queue) == 0:
