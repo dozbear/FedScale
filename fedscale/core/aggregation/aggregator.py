@@ -440,7 +440,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
             job_api_pb2.AggregatorWeightRequest(
                 aggregator_id = self.aggregator_id,
                 data = self.serialize_response({
-                    'group': self.using_group_params,
+                    'using_group_params': self.using_group_params,
                     'path': weight_path
                 })
             )
@@ -912,10 +912,6 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
     
     def SCHEDULER_WEIGHT_UPDATE(self, request, context):
         # TODO
-        if self.using_group_params == True:
-            self.aggregate_client_group_weights(results)
-        else:
-            self.aggregate_client_weights(results)
 
         aggr_id = request.aggregator_id
         data = self.deserialize_response(request.data)
@@ -927,7 +923,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         self.update_lock.acquire()
         self.model_in_update += 1
 
-        if data['group']:
+        if data['using_group_params']:
             self.aggregate_client_group_weights(results)
         else:
             self.aggregate_client_weights(results)
