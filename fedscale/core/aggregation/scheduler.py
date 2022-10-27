@@ -92,6 +92,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
     
     def send_task(self, communicator, aggr_id, data):
         communicator.connect_to_server()
+        logging.info('Sending data {data} to aggregator {aggr_id}.')
         response = communicator.stub.SCHEDULER_WEIGHT_UPDATE(
             job_api_pb2.SchedulerWeightRequest(
                 aggregator_id = aggr_id,
