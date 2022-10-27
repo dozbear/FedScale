@@ -125,7 +125,7 @@ class Aggregator(job_api_pb2_grpc.JobServiceServicer):
         torch.backends.cudnn.deterministic = True
     
     def report_aggregator_info_handler(self):
-        return { 'capicity': self.capicity }
+        return { 'capacity': self.capicity }
     
     def init_scheduler_communication(self):
         # initiate communication to scheduler
