@@ -91,6 +91,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         return pickle.dumps(responses)
     
     def send_task(self, communicator, aggr_id, data):
+        communicator.connect_to_server()
         response = communicator.stub.SCHEDULER_WEIGHT_UPDATE(
             job_api_pb2.AggregatorWeightRequest(
                 aggregator_id = aggr_id,
