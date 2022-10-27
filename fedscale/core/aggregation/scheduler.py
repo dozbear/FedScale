@@ -103,7 +103,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
         logging.info("%%%%%%%%%% Hi I'm a running scheduler! %%%%%%%%%%")
         while(True):
             if len(self.events_queue) > 0:
-                aggr_id, current_event, weight_path, data = self.events_queue.popleft()
+                aggr_id, current_event, data = self.events_queue.popleft()
                 aggregator = self.aggregators[aggr_id]
                 if current_event == commons.AGGREGATOR_UPDATE:
                     if aggregator['load'] < aggregator['capacity']:
@@ -113,7 +113,7 @@ class Scheduler(job_api_pb2_grpc.JobServiceServicer):
                         if len(self.events_queue) == 0:
                             # avoid busy waiting
                             time.sleep(0.1)
-                        self.append((aggr_id, weight_path, data))
+                        self.append((aggr_id, current_event, data))
                 elif current_event == commons.AGGREGATOR_FINISH:
                     aggregator['load'] -= 1
             else:
